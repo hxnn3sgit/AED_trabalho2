@@ -6,8 +6,8 @@
 // Graph - Using a list of adjacency lists representation
 //
 
-// Student Name :
-// Student Number :
+// Student Name : Hannes Seidl
+// Student Number : 123643
 // Student Name :
 // Student Number :
 
