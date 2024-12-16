@@ -138,6 +138,10 @@ Graph* GraphCreateTranspose(const Graph* g) {
   assert(g->isComplete == 0);
 
   // COMPLETE THE CODE
+  
+  // create a new graph gt
+  Graph *gt = malloc(sizeof(struct _GraphHeader));
+
 
   return NULL;
 }
