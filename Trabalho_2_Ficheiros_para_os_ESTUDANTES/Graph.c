@@ -140,10 +140,34 @@ Graph* GraphCreateTranspose(const Graph* g) {
   // COMPLETE THE CODE
   
   // create a new graph gt
-  Graph *gt = malloc(sizeof(struct _GraphHeader));
+  Graph *gt = GraphCreate(g->numVertices, g->isDigraph, g->isWeighted);
+
+  List *verticesList = g->verticesList;
+  ListMoveToHead(verticesList);
+
+  printf("debugging:\n");
+  for (unsigned int i = 0; i < g->numVertices; ++i) {
+	struct _Vertex *current_vertex = ListGetCurrentItem(verticesList);
+	assert(current_vertex != NULL);
+	//printf("Vertices id: %d\n", current_vertex->id);
+	//printf("iDegree: %d, outDegree: %d\n", current_vertex->inDegree, current_vertex->outDegree);
+
+	List *edgesList = current_vertex->edgesList;
+	ListMoveToHead(edgesList);
+	for (unsigned int j = 0; j < current_vertex->outDegree; ++j) {
+		struct _Edge *current_edge = ListGetCurrentItem(edgesList);
+		assert(current_edge != NULL);
+		//printf("adjVertex: %d; weight: %f\n", current_edge->adjVertex, current_edge->weight);
+	
+		GraphAddEdge(gt, current_edge->adjVertex, current_vertex->id);
+
+		ListMoveToNext(edgesList);
+	}
+	ListMoveToNext(verticesList);
+  }
 
 
-  return NULL;
+  return gt;
 }
 
 void GraphDestroy(Graph** p) {

@@ -6,8 +6,8 @@
 // GraphBellmanFord - Bellman-Ford Algorithm
 //
 
-// Student Name :
-// Student Number :
+// Student Name : Hannes Seidl
+// Student Number : 123643
 // Student Name :
 // Student Number :
 
@@ -58,6 +58,9 @@ GraphBellmanFordAlg* GraphBellmanFordAlgExecute(Graph* g,
   // result->predecessor
   //
 
+  // stop flag idee
+  // while loop
+	// GET adjacents, becaues i am not longer in graph.c, but there are functions
   // Mark all vertices as not yet visited, i.e., ZERO
   
   // No vertex has (yet) a (valid) predecessor
