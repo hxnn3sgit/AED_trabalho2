@@ -46,7 +46,7 @@ double GraphGetAverageDegree(const Graph* g);
 unsigned int GraphGetMaxDegree(const Graph* g);
 
 //
-// For a digraph
+// For a digrap
 //
 unsigned int GraphGetMaxOutDegree(const Graph* g);
 
