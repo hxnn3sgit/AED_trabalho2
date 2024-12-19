@@ -92,92 +92,55 @@ GraphBellmanFordAlg* GraphBellmanFordAlgExecute(Graph* g,
 }
 */
 // new version:
-GraphBellmanFordAlg* GraphBellmanFordAlgExecute(Graph* g, unsigned int startVertex) {
-    // 1. Validate input
-    int numVertices = GraphGetNumVertices(g);
+GraphBellmanFordAlg *GraphBellmanFordAlgExecute(Graph *g, unsigned int startVertex) {
     assert(g != NULL);
-    assert(startVertex < numVertices);
+    assert(startVertex < GraphGetNumVertices(g));
+    assert(GraphIsWeighted(g) == 0);
 
-    // 2. Allocate memory for the result structure
-    GraphBellmanFordAlg* result = (GraphBellmanFordAlg*)malloc(sizeof(GraphBellmanFordAlg));
+    // Create and initialize result structure
+    GraphBellmanFordAlg *result = (GraphBellmanFordAlg *)malloc(sizeof(GraphBellmanFordAlg));
     assert(result != NULL);
 
     result->graph = g;
     result->startVertex = startVertex;
 
-    // 3. Allocate arrays for marked, distance, and predecessor
-    result->marked = (unsigned int*)malloc(sizeof(unsigned int) * numVertices);
-    result->distance = (int*)malloc(sizeof(int) * numVertices);
-    result->predecessor = (int*)malloc(sizeof(int) * numVertices);
-    assert(result->marked != NULL && result->distance != NULL && result->predecessor != NULL);
+    unsigned int numVertices = GraphGetNumVertices(g);
+    result->distance = (int *)malloc(numVertices * sizeof(int));
+    result->predecessor = (int *)malloc(numVertices * sizeof(int));
+    result->marked = (unsigned int *)calloc(numVertices, sizeof(unsigned int));
+    assert(result->distance != NULL && result->predecessor != NULL && result->marked != NULL);
 
-    // 4. Initialize arrays
-    for (int i = 0; i < numVertices; i++) {
-        result->marked[i] = 0;         // Marked as unvisited
-        result->distance[i] = INT_MAX; // Distance initially infinity
-        result->predecessor[i] = -1;  // No predecessor
+    // Initialize arrays
+    for (unsigned int i = 0; i < numVertices; i++) {
+        result->distance[i] = -1;  // "Infinity" for unweighted graphs
+        result->predecessor[i] = -1; // No predecessor initially
     }
-    result->distance[startVertex] = 0; // Distance to itself is 0
 
-    // 5. Bellman-Ford algorithm (Relax edges up to V-1 times)
-    for (int i = 0; i < numVertices - 1; i++) {
-        for (int u = 0; u < numVertices; u++) {
-            // Get all adjacent vertices and edge weights of u
-            unsigned int* adjacents = GraphGetAdjacentsTo(g, u);
-            double* weights = GraphGetDistancesToAdjacents(g, u);
+    // Initialize start vertex
+    result->distance[startVertex] = 0;
+    result->marked[startVertex] = 1;
 
-            if (adjacents == NULL || weights == NULL) continue; // Skip if no adjacents
-
-            // Traverse adjacents array
-            for (int v = 0; adjacents[v] != (unsigned int)-1; v++) {
-                int neighbor = adjacents[v];
-                double weight = weights[v];
-                
-                // Relax edge u -> neighbor
-                if (result->distance[u] != INT_MAX && result->distance[u] + weight < result->distance[neighbor]) {
-                    result->distance[neighbor] = result->distance[u] + weight;
-                    result->predecessor[neighbor] = u;
+    // Relax edges repeatedly
+    for (unsigned int i = 1; i < numVertices; i++) {
+        for (unsigned int v = 0; v < numVertices; v++) {
+            if (result->distance[v] != -1) { // If v is reachable
+                unsigned int *adjacents = GraphGetAdjacentsTo(g, v);
+                unsigned int numAdj = adjacents[0];
+                for (unsigned int j = 1; j <= numAdj; j++) {
+                    unsigned int u = adjacents[j];
+                    if (result->distance[u] == -1 || result->distance[v] + 1 < result->distance[u]) {
+                        result->distance[u] = result->distance[v] + 1;
+                        result->predecessor[u] = v;
+                        result->marked[u] = 1;
+                    }
                 }
-            }
-
-            free(adjacents); // Free memory allocated for adjacents
-            free(weights);   // Free memory allocated for weights
-        }
-    }
-
-    // 6. Final Check for Negative-Weight Cycles (Optional for non-negative graphs)
-    for (int u = 0; u < numVertices; u++) {
-        unsigned int* adjacents = GraphGetAdjacentsTo(g, u);
-        double* weights = GraphGetDistancesToAdjacents(g, u);
-
-        if (adjacents == NULL || weights == NULL) continue;
-
-        for (int v = 0; adjacents[v] != (unsigned int)-1; v++) {
-            int neighbor = adjacents[v];
-            double weight = weights[v];
-
-            if (result->distance[u] != INT_MAX && result->distance[u] + weight < result->distance[neighbor]) {
-                printf("Graph contains a negative-weight cycle\n");
                 free(adjacents);
-                free(weights);
-
-                // Free result structure
-                free(result->marked);
-                free(result->distance);
-                free(result->predecessor);
-                free(result);
-                return NULL;
             }
         }
-
-        free(adjacents);
-        free(weights);
     }
 
-    // 7. Return the result structure
     return result;
 }
-
 
 void GraphBellmanFordAlgDestroy(GraphBellmanFordAlg** p) {
   assert(*p != NULL);

@@ -25,7 +25,7 @@ struct _Vertex {
   unsigned int id;
   unsigned int inDegree;
   unsigned int outDegree;
-  List* edgesList;
+  List *edgesList;
 };
 
 struct _Edge {
