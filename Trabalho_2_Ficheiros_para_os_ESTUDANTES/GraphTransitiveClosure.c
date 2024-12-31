@@ -65,6 +65,8 @@ Graph* GraphComputeTransitiveClosure(Graph* g) {
         for (unsigned int j = 0; j < numVertices; j++) {
             if (GraphBellmanFordAlgReached(bfResult, j) && i != j) {
                 GraphAddEdge(tcGraph, i, j);
+
+                InstrCount[1]++; // edge addition counter
             }
         }
 

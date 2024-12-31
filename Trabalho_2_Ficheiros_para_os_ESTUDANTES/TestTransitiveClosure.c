@@ -10,6 +10,7 @@
 
 #include "Graph.h"
 #include "GraphTransitiveClosure.h"
+#include "instrumentation.h"
 
 int main(void) {
   // What kind of graph is dig01?
@@ -24,11 +25,17 @@ int main(void) {
 
   GraphCheckInvariants(dig01);
 
+
+  InitializeInstrumentation();
+
   Graph* tcdig01 = GraphComputeTransitiveClosure(dig01);
   printf("The transitive closure:\n");
   // Displaying in DOT format
   GraphDisplayDOT(tcdig01);
   printf("\n");
+
+  InstrPrint();
+  InstrReset();
 
   GraphCheckInvariants(tcdig01);
 
@@ -42,11 +49,16 @@ int main(void) {
 
   GraphCheckInvariants(dig03);
 
+  InitializeInstrumentation();
+
   Graph* tcdig03 = GraphComputeTransitiveClosure(dig03);
   printf("The transitive closure:\n");
   // Displaying in DOT format
   GraphDisplayDOT(tcdig03);
   printf("\n");
+
+  InstrPrint();
+  InstrReset();
 
   GraphCheckInvariants(tcdig03);
 

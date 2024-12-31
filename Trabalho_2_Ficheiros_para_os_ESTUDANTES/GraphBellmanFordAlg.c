@@ -34,64 +34,6 @@ struct _GraphBellmanFordAlg {
   unsigned int startVertex;  // The root of the shortest-paths tree
 };
 
-/*
-GraphBellmanFordAlg* GraphBellmanFordAlgExecute(Graph* g,
-                                                unsigned int startVertex) {
-  int numVertices = GraphGetNumVertices(g);
-  int numEdges = GraphGetNumEdges(g);
-  assert(g != NULL);
-  assert(startVertex < numVertices);
-  assert(GraphIsWeighted(g) == 0);
-
-  GraphBellmanFordAlg* result =
-      (GraphBellmanFordAlg*)malloc(sizeof(struct _GraphBellmanFordAlg));
-  assert(result != NULL);
-
-  // Given graph and start vertex for the shortest-paths
-  result->graph = g;
-  result->startVertex = startVertex;
-
-  // TO BE COMPLETED !!
-  //
-  // CREATE AND INITIALIZE
-  
-  // marked array and distance array initialization:
-  // allocation:
-  result->marked = malloc(sizeof(unsigned int) * numVertices);
-  result->distance = malloc(sizeof(int) * numEdges);
-  result->predecessor = malloc(sizeof(int) * numVertices);
-
-  // initialization:
-  memset(result->marked, 0, numVertices, sizeof(int));
-  memset(result->distance, -1, numVertices, sizeof(int));
-  memset(result->predecessor, -1, numVertices, sizeof(int));
-  result->distance[startVertex] = 0; // distance to itself is 0
-
-  int stopflag = 1;
-
-  // stop flag idee
-  // while loop
-	// GET adjacents, because i am not longer in graph.c, but there are functions
-  // Mark all vertices as not yet visited, i.e., ZERO
-
-  // No vertex has (yet) a (valid) predecessor
-  
-  // No vertex has (yet) a (valid) distance to the start vertex
-  
-  // THE ALGORTIHM TO BUILD THE SHORTEST-PATHS TREE
-  
-  int stopflag = 0;
-  for (int i = 0; i < numVertices - 1; ++i) {
-	stopflag = 0;
-	for (int u = 0; u < numVertices; ++u) {
-		List *adjacents = GraphGetAdjacents(g, 
-	}
-  }
-
-  return NULL;
-}
-*/
-// new version:
 GraphBellmanFordAlg *GraphBellmanFordAlgExecute(Graph *g, unsigned int startVertex) {
     assert(g != NULL);
     assert(startVertex < GraphGetNumVertices(g));
@@ -132,6 +74,8 @@ GraphBellmanFordAlg *GraphBellmanFordAlgExecute(Graph *g, unsigned int startVert
                         result->distance[u] = result->distance[v] + 1;
                         result->predecessor[u] = v;
                         result->marked[u] = 1;
+
+                        InstrCount[0]++; // relaxation counter
                     }
                 }
                 free(adjacents);

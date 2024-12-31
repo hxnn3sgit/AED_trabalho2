@@ -136,3 +136,63 @@ void InstrPrint(void) { ///
   puts("");
 }
 
+// Initialize instrumentation
+void InitializeInstrumentation() {
+    InstrName[0] = "EdgeRelaxations";  // Count relaxations in Bellman-Ford
+    InstrName[1] = "EdgeAdditions";   // Count edge additions in transitive closure
+    InstrCalibrate();
+    InstrReset();
+}
+
+// Measure execution time
+double MeasureExecutionTime(void (*function)(void*), void* arg) {
+    double startTime = cpu_time();
+    function(arg);
+    double endTime = cpu_time();
+    return endTime - startTime;
+}
+
+// Estimate memory usage based on graph structures
+size_t EstimateMemoryUsage(size_t numVertices, size_t numEdges, size_t vertexSize, size_t elementSize) {
+    /* size_t vertexMemory = numVertices * elementSize; // Storage for vertex properties
+    size_t edgeMemory = numEdges * sizeof(int);      // Approximation for edges
+    return vertexMemory + edgeMemory; */
+
+    // improved memory usage calculation function:
+    
+    // Memory for vertex structures (e.g., ID, degree, and pointer to adjacency list)
+    size_t vertexMemory = numVertices * vertexSize;
+
+    // Memory for adjacency list pointers (one per vertex)
+    size_t adjacencyListPointers = numVertices * sizeof(void*);
+
+    // Memory for edges in adjacency lists
+    size_t edgeMemory = numEdges * edgeSize;
+
+    // Total memory usage
+    return vertexMemory + adjacencyListPointers + edgeMemory;
+}
+
+// Print instrumentation results
+void PrintInstrumentationMetrics(const char* algorithmName, size_t memoryUsage) {
+    // Calculate elapsed time
+    double elapsedTime = cpu_time() - InstrTime;
+    double calibratedTime = elapsedTime / InstrCTU;
+
+    // Print metrics
+    printf("\n=================================\n");
+    printf("Algorithm: %s\n", algorithmName);
+    printf("---------------------------------\n");
+    printf("Execution Time: %.6f seconds\n", elapsedTime);
+    printf("Calibrated Time: %.6f units\n", calibratedTime);
+    printf("Memory Usage: %zu bytes\n", memoryUsage);
+
+    // Print counters for edge relaxations and additions
+    for (int i = 0; i < NUMCOUNTERS; i++) {
+        if (InstrName[i] != NULL) {
+            printf("%s: %lu\n", InstrName[i], InstrCount[i]);
+        }
+    }
+    printf("=================================\n");
+}
+

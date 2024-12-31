@@ -10,6 +10,7 @@
 
 #include "Graph.h"
 #include "GraphBellmanFordAlg.h"
+#include "instrumentation.h"
 
 int main(void) {
   // What kind of graph is dig01?
@@ -28,11 +29,29 @@ int main(void) {
 
   // Consider each vertex as a start vertex
   for (unsigned int i = 0; i < 6; i++) {
+    InitializeInstrumentation();
+    InstrCalibrate();
     GraphBellmanFordAlg* BF_result = GraphBellmanFordAlgExecute(dig01, i);
 
     printf("The shortest path tree rooted at %u\n", i);
     GraphBellmanFordAlgDisplayDOT(BF_result);
     printf("\n");
+
+    // Get memory usage for BF_result
+    size_t numVertices = GraphGetNumVertices(dig01); // Number of vertices remains the same
+    size_t numEdges = 0;
+
+    for (unsigned int j = 0; j < numVertices; ++j) {
+      if (GraphBellmanFordAlgReached(BF_result, j) && (BF_result->predecessor[j] != -1) )
+        ++numEdges;
+    }
+
+    size_t vertexSize = sizeof(unsigned int) + sizeof(int) * 2;
+    size_t edgeSize = sizeof(int) * numEdges;
+
+    size_t memory_usage = EstimateMemoryUsage(numVertices, numEdges, vertexSize, edgeSize);
+    //PrintInstrumentationMetrics("BellmanFord Algorithm", );
+    InstrReset();
 
     GraphBellmanFordAlgDestroy(&BF_result);
   }
@@ -56,6 +75,8 @@ int main(void) {
 
   // Bellman-Ford Algorithm
 
+  InitializeInstrumentation();
+
   // Consider each vertex as a start vertex
   for (unsigned int i = 0; i < 6; i++) {
     GraphBellmanFordAlg* BF_result = GraphBellmanFordAlgExecute(g01, i);
@@ -66,6 +87,8 @@ int main(void) {
 
     GraphBellmanFordAlgDestroy(&BF_result);
   }
+
+  InstrPrint();
 
   // Reading a directed graph from file
   FILE* file = fopen("DG_2.txt", "r");
@@ -79,6 +102,9 @@ int main(void) {
 
   // Bellman-Ford Algorithm
 
+  InstrReset();
+  InitializeInstrumentation();
+
   // Consider each vertex as a start vertex
   for (unsigned int i = 0; i < GraphGetNumVertices(dig03); i++) {
     GraphBellmanFordAlg* BF_result = GraphBellmanFordAlgExecute(dig03, i);
@@ -89,6 +115,8 @@ int main(void) {
 
     GraphBellmanFordAlgDestroy(&BF_result);
   }
+
+  InstrPrint();
 
   GraphDestroy(&g01);
   GraphDestroy(&dig01);

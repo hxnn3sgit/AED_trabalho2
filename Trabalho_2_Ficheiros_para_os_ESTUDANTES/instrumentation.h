@@ -1,6 +1,8 @@
 #ifndef _INSTRUMENTATION_H
 #define _INSTRUMENTATION_H
 
+#include <stdlib.h>
+
 /// A generic instrumentation module.
 ///
 /// João Manuel Rodrigues, AED, 2023, 2024
@@ -51,6 +53,15 @@ void InstrCalibrate(void) ;
 void InstrReset(void) ;
 
 void InstrPrint(void) ;
+
+// Functions by myself for measuring performance:
+void InitializeInstrumentation();
+
+double MeasureExecutionTime(void (*function)(void*), void *arg);
+
+size_t EstimateMemoryUsage(size_t numVertices, size_t numEdges, size_t vertexSize, size_t elementSize);
+
+void PrintInstrumentationMetrics(const char* algorithmName, size_t memoryUsage);
 
 #endif
 
