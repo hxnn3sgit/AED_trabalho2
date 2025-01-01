@@ -175,3 +175,11 @@ void GraphBellmanFordAlgDisplayDOT(const GraphBellmanFordAlg* p) {
   // Housekeeping
   GraphDestroy(&paths_tree);
 }
+
+// Helper function:
+
+int GraphBellmanFordAlgGetPredecessor(const GraphBellmanFordAlg* result, unsigned int vertex) {
+    assert(result != NULL);
+    assert(vertex < GraphGetNumVertices(result->graph));
+    return result->predecessor[vertex];
+}

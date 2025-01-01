@@ -33,4 +33,8 @@ void GraphBellmanFordAlgShowPath(const GraphBellmanFordAlg* p, unsigned int v);
 
 void GraphBellmanFordAlgDisplayDOT(const GraphBellmanFordAlg* p);
 
+// Helper Function:
+
+int GraphBellmanFordAlgGetPredecessor(const GraphBellmanFordAlg* result, unsigned int vertex);
+
 #endif  // _GRAPH_BELLMAN_FORD_ALG_

@@ -152,8 +152,10 @@ double MeasureExecutionTime(void (*function)(void*), void* arg) {
     return endTime - startTime;
 }
 
+
+
 // Estimate memory usage based on graph structures
-size_t EstimateMemoryUsage(size_t numVertices, size_t numEdges, size_t vertexSize, size_t elementSize) {
+size_t EstimateMemoryUsage(size_t numVertices, size_t numEdges, size_t vertexSize, size_t edgeSize) {
     /* size_t vertexMemory = numVertices * elementSize; // Storage for vertex properties
     size_t edgeMemory = numEdges * sizeof(int);      // Approximation for edges
     return vertexMemory + edgeMemory; */

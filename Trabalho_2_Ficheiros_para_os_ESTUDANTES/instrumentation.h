@@ -59,7 +59,7 @@ void InitializeInstrumentation();
 
 double MeasureExecutionTime(void (*function)(void*), void *arg);
 
-size_t EstimateMemoryUsage(size_t numVertices, size_t numEdges, size_t vertexSize, size_t elementSize);
+size_t EstimateMemoryUsage(size_t numVertices, size_t numEdges, size_t vertexSize, size_t edgeSize);
 
 void PrintInstrumentationMetrics(const char* algorithmName, size_t memoryUsage);
 

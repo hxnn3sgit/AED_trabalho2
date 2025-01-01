@@ -42,17 +42,18 @@ int main(void) {
     size_t numEdges = 0;
 
     for (unsigned int j = 0; j < numVertices; ++j) {
-      if (GraphBellmanFordAlgReached(BF_result, j) && (BF_result->predecessor[j] != -1) )
-        ++numEdges;
+      if (GraphBellmanFordAlgReached(BF_result, j) && GraphBellmanFordAlgGetPredecessor(BF_result, j) != -1) {
+        numEdges++;
+      }
     }
 
     size_t vertexSize = sizeof(unsigned int) + sizeof(int) * 2;
-    size_t edgeSize = sizeof(int) * numEdges;
+    size_t edgeSize = sizeof(int);
+    size_t memoryUsage = EstimateMemoryUsage(numVertices, numEdges, vertexSize, edgeSize);
 
-    size_t memory_usage = EstimateMemoryUsage(numVertices, numEdges, vertexSize, edgeSize);
-    //PrintInstrumentationMetrics("BellmanFord Algorithm", );
+    PrintInstrumentationMetrics("BellmanFord Algorithm", memoryUsage);
+    
     InstrReset();
-
     GraphBellmanFordAlgDestroy(&BF_result);
   }
 
