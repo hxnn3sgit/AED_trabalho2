@@ -41,11 +41,6 @@ void copy_graph(Graph *original, Graph *result) {
 // Return the computed transitive closure as a directed graph
 // Use the Bellman-Ford algorithm
 
-  // idea: 
-  // - iterating through every vertice
-  // - check with wich vertices every vertice is connected
-  // - add a new edge from the current vertex to the other vertices
-// new version:
 Graph* GraphComputeTransitiveClosure(Graph* g) {
     assert(g != NULL);
     assert(GraphIsDigraph(g));
@@ -76,10 +71,3 @@ Graph* GraphComputeTransitiveClosure(Graph* g) {
 
     return tcGraph;
 }
-
-  // COMPLETE THE CODE
-
-  // idea: 
-  // - iterating through every vertice
-  // - check with wich vertices every vertice is connected
-  // - add a new edge from the current vertex to the other vertices

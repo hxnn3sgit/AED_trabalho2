@@ -33,7 +33,6 @@ struct _GraphAllPairsShortestDistances {
 // Allocate memory and initialize the distance matrix
 // Compute the distances between vertices by running the Bellman-Ford algorithm
 
-// new:
 GraphAllPairsShortestDistances* GraphAllPairsShortestDistancesExecute(Graph* g) {
     assert(g != NULL);
 
@@ -79,54 +78,6 @@ GraphAllPairsShortestDistances* GraphAllPairsShortestDistancesExecute(Graph* g) 
     shortest_distances->graph = g;
     return shortest_distances;
 }
-
-
-// old
-/*GraphAllPairsShortestDistances* GraphAllPairsShortestDistancesExecute(
-    Graph* g) {
-  assert(g != NULL);
-
-  // COMPLETE THE CODE
- 
-  GraphAllPairsShortestDistances *shortest_distances = malloc(sizeof(GraphAllPairsShortestDistances));
-
-  assert(shortest_distances != NULL && "no storage allocated for shortest distances...\n");
-  printf("address of shortest_distances: %p\n", shortest_distances);
-
-  unsigned int numVertices = GraphGetNumVertices(g);
-
-  shortest_distances->distance = malloc(sizeof(int*) * numVertices);
-
-  // allocate memory for the distance matrix
-  printf("allocating memory for distance matrix:\n");
-  for (unsigned int i = 0; i < numVertices; ++i) {
-	shortest_distances->distance[i] = malloc(sizeof(int) * numVertices);
-	assert(shortest_distances->distance[i] != NULL);
-	printf("address of distance: %p\n", shortest_distances->distance[i]);
-  }
-
-  // for every vertex, run BellmanFord-Algorithm,
-  ListMoveToHead(g->verticesList);
-  for (unsigned int i = 0; i < numVertices; ++i) {
-	GraphBellmanFordAlg *bellman_ford = GraphBellmanFordAlgExecute(g, i);
-	assert(bellman_ford != NULL);
-
-	for (unsigned int j = 0; j < numVertices; ++j) {
-		if (i == j) {
-			shortest_distances->distance[i][j] = 0; // vertex to itself is zero
-		} else if (GraphBellmanFordAlgDistance(bellman_ford, j)) {
-			shortest_distances->distance[i][j] = GraphBellmanFordAlgDistance(bellman_ford, j);
-		} else { // no connection: Indefinite
-			shortest_distances->distance[i][j] = -1;
-		}
-	}
-	GraphBellmanFordAlgDestroy(bellman_ford);
-  }
-
-  // returns a struct with 2D array wich contains all the shortest distances from one vertext to the others
-  printf("end of function\n");
-  return shortest_distances;
-}*/
 
 void GraphAllPairsShortestDistancesDestroy(GraphAllPairsShortestDistances** p) {
   assert(*p != NULL);
