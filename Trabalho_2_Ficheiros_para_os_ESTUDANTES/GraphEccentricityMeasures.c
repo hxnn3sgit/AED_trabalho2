@@ -4,12 +4,18 @@
 //
 // GraphEccentricityMeasures
 
+// Student Name : Hannes Seidl
+// Student Number : 123643
+// Student Name : 
+// Student Number : 
+
 #include "GraphEccentricityMeasures.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "Graph.h"
 #include "GraphAllPairsShortestDistances.h"
+#include <limits.h>
 
 struct _GraphEccentricityMeasures {
   unsigned int* centralVertices;  // centralVertices[0] = number of central vertices
